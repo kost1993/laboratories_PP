@@ -19,12 +19,12 @@ static long long int hashsum;
 
 void *work(void *number) {
 	long long int local_number = * (long long int *) number;
-	double exp_rezult;
+	long long int exp_rezult;
 	exp_rezult = exp(local_number);
-	printf("%g\n", exp_rezult);
+	printf("exp\t=\t%lld\n", exp_rezult);
 	pthread_mutex_lock(&mutex);
-	hashsum ^= local_number;
-	printf("%llx\n", hashsum);
+	hashsum ^= exp_rezult;
+	printf("hash\t=\t%llx\n", hashsum);
 	pthread_mutex_unlock(&mutex);
 	pthread_exit(NULL);
 }
