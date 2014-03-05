@@ -25,6 +25,7 @@ int main(int argc, char **argv)
 {
 	double i;
 	int index_tread;
+	int sum_init_treads = 0;
 	int y;
 	pthread_t id[NUM_THREADS];
 	int data_read_bytes;
@@ -63,11 +64,12 @@ int main(int argc, char **argv)
 					exit(19);
 				}
 			}
+			sum_init_treads++;
 			index_tread++;
 		} while (data_read_bytes == size_of_read_for_hash);
 		close(inp_file_d);
 	}
-	for (index_tread = 0; i < NUM_THREADS; i++)
+	for (index_tread = 0; index_tread < sum_init_treads; index_tread++)
 		pthread_join(id[index_tread], NULL);
 	/*
 	n=read(0, buffer, BUFSIZER);
