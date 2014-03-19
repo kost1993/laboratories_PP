@@ -8,7 +8,7 @@
 
 long long int bytestoint(char *s)
 {
-	int l = strlen(s);
+	int l = 2 * sizeof(s);
 	/*
 	printf("%d\n",l);
 	*/
