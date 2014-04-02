@@ -3,6 +3,7 @@
 
 /*#define divergence 0.000000001*/
 #define bordervid 2
+#define NAN_ALT 0.0/0.0
 
 double exp_alt_core(double);
 double pow_d_i_alt(double, int);
@@ -96,7 +97,7 @@ double ln_alt(double y)
 	/* ln(x) = ln(x/e) + 1 */
 	if (y <= 0) {
 		/*printf("Error ln from y < 0");*/
-		return lli_min;
+		return NAN_ALT;
 	}
 	while (y > bordervid) {
 		y = y / M_E_alt;

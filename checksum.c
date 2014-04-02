@@ -16,6 +16,7 @@
 #define MAX_NUM_THREADS 128
 #define BUFSIZE_CORES_STR 4
 #define LENGTH_OF_BLOCK 8
+#define NAN_ALT 0.0/0.0
 
 pthread_mutex_t mutex;
 static unsigned long long int hashsum;
@@ -144,9 +145,15 @@ int main(int argc, char **argv)
 		do {
 			data_read_bytes = read(inp_file_d, buffer,
 				allowed_memory);
+			if (data_read_bytes == -1) {
+				printf("Cant read input file (maybe it is a folder):\n %s\n", filename);
+				free_mem();
+				free(buffer);
+				return 1;
+			}
 			read_buffer_size = data_read_bytes;
 			position = 0;
-			printf("Used memory\t=\t%lld\n", data_read_bytes);
+			printf("Used memory\t=\t%lld bytes\n", data_read_bytes);
 			fflush(stdout);
 			number_blocks = read_buffer_size / LENGTH_OF_BLOCK;
 			modulo_number_blocks = read_buffer_size %
@@ -187,6 +194,7 @@ int main(int argc, char **argv)
 			/*printf("Threads closed\n");*/
 			fflush(stdout);
 			printf("\n");
+			fflush(stdout);
 		} while (data_read_bytes == allowed_memory);
 		close(inp_file_d);
 		free(buffer);
@@ -250,9 +258,17 @@ void *work(void *number)
 		} while (pos_i < LENGTH_OF_BLOCK);
 		local_number = bytestoint(buffer_medium);
 		g_ln_rezult = ln_alt(local_number);
-		do {
-			g_ln_rezult *= 10.0;
-		} while (g_ln_rezult * 10.0 < lli_max);
+		if (g_ln_rezult == NAN_ALT)
+			g_ln_rezult = lli_min;
+		if (g_ln_rezult > 0) {
+			while (g_ln_rezult * 10.0 < lli_max) {
+				g_ln_rezult *= 10.0;
+			}
+		} else if (g_ln_rezult < 0) {
+			while (g_ln_rezult * 10.0 > lli_min) {
+				g_ln_rezult *= 10.0;
+			} 
+		}
 		llu_rezult = g_ln_rezult;
 		local_hashsum ^= llu_rezult;
 		position_thread[local_index] +=
