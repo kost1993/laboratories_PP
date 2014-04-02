@@ -16,7 +16,7 @@
 #define MAX_NUM_THREADS 128
 #define BUFSIZE_CORES_STR 4
 #define LENGTH_OF_BLOCK 8
-#define NAN_ALT 0.0/0.0
+#define NAN_ALT (0.0/0.0)
 
 pthread_mutex_t mutex;
 static unsigned long long int hashsum;
@@ -261,13 +261,11 @@ void *work(void *number)
 		if (g_ln_rezult == NAN_ALT)
 			g_ln_rezult = lli_min;
 		if (g_ln_rezult > 0) {
-			while (g_ln_rezult * 10.0 < lli_max) {
+			while (g_ln_rezult * 10.0 < lli_max)
 				g_ln_rezult *= 10.0;
-			}
 		} else if (g_ln_rezult < 0) {
-			while (g_ln_rezult * 10.0 > lli_min) {
+			while (g_ln_rezult * 10.0 > lli_min)
 				g_ln_rezult *= 10.0;
-			} 
 		}
 		llu_rezult = g_ln_rezult;
 		local_hashsum ^= llu_rezult;

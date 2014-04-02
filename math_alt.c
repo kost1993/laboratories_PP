@@ -3,7 +3,7 @@
 
 /*#define divergence 0.000000001*/
 #define bordervid 2
-#define NAN_ALT 0.0/0.0
+#define NAN_ALT (0.0/0.0)
 
 double exp_alt_core(double);
 double pow_d_i_alt(double, int);
